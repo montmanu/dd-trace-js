@@ -1,10 +1,11 @@
 'use strict'
 
-const { expect } = require('chai')
-const { describe, it, beforeEach } = require('mocha')
-const sinon = require('sinon')
-const proxyquire = require('proxyquire')
+const assert = require('node:assert/strict')
 
+const { expect } = require('chai')
+const { beforeEach, describe, it } = require('mocha')
+const proxyquire = require('proxyquire')
+const sinon = require('sinon')
 require('../../setup/mocha')
 
 const breakpoint = { file: 'file.js', line: 1 }
@@ -86,9 +87,9 @@ describe('onPause', function () {
 
   it('should not fail if there is no probe for at the breakpoint', async function () {
     await onPaused(event)
-    expect(session.post).to.have.been.calledOnceWith('Debugger.resume')
-    expect(ackReceived).to.not.have.been.called
-    expect(send).to.not.have.been.called
+    sinon.assert.calledOnceWith(session.post, 'Debugger.resume')
+    sinon.assert.notCalled(ackReceived)
+    sinon.assert.notCalled(send)
   })
 
   it('should throw if paused for an unknown reason', async function () {
@@ -108,9 +109,9 @@ describe('onPause', function () {
     }
 
     expect(thrown).to.be.an('error')
-    expect(thrown.message).to.equal('Unexpected Debugger.paused reason: OOM')
-    expect(session.post).to.not.have.been.called
-    expect(ackReceived).to.not.have.been.called
-    expect(send).to.not.have.been.called
+    assert.strictEqual(thrown.message, 'Unexpected Debugger.paused reason: OOM')
+    sinon.assert.notCalled(session.post)
+    sinon.assert.notCalled(ackReceived)
+    sinon.assert.notCalled(send)
   })
 })
