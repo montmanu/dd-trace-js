@@ -97,7 +97,7 @@ describe('mongoose instrumentations', () => {
                 startCh.unsubscribe(start)
                 finishCh.unsubscribe(finish)
 
-                sinon.assert.calledOnceWith(start, { filters, methodName })
+                sinon.assert.calledOnceWithExactly(start, { filters, methodName })
                 sinon.assert.calledOnce(finish)
 
                 done()
@@ -115,7 +115,7 @@ describe('mongoose instrumentations', () => {
               startCh.unsubscribe(start)
               finishCh.unsubscribe(finish)
 
-              sinon.assert.calledOnceWith(start, { filters, methodName })
+              sinon.assert.calledOnceWithExactly(start, { filters, methodName })
               sinon.assert.calledOnce(finish)
 
               done()
@@ -512,7 +512,7 @@ describe('mongoose instrumentations', () => {
 
               sanitizeFilterFinishCh.unsubscribe(listener)
 
-              sinon.assert.calledOnceWith(listener, { sanitizedObject })
+              sinon.assert.calledOnceWithExactly(listener, { sanitizedObject })
             })
           })
         }
